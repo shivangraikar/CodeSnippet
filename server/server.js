@@ -8,6 +8,7 @@ const bcrypt = require('bcryptjs');
 const User = require('./models/User');
 const Snippet = require('./models/Snippet');
 const puppeteer = require('puppeteer');
+const path = require('path');
 
 const app = express();
 const port = 3000; // Or any port you prefer
@@ -29,12 +30,16 @@ require('./passport-config');
 // Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/code_snippet_db', {
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true
+  useUnifiedTopology: true
 }).then(() => console.log('MongoDB connected')).catch(err => console.log(err));
 
-// Routes
 
+// Routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+  });
+  
+  
 // Signup
 app.post('/signup', async (req, res) => {
   try {
