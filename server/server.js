@@ -14,6 +14,7 @@ const app = express();
 const port = 3000; // Or any port you prefer
 
 // Middleware
+app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(session({
@@ -31,15 +32,17 @@ require('./passport-config');
 mongoose.connect('mongodb://localhost:27017/code_snippet_db', {
   useNewUrlParser: true,
   useUnifiedTopology: true
-}).then(() => console.log('MongoDB connected')).catch(err => console.log(err));
-
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => {
+    console.error('MongoDB connection error:', err.message);
+    process.exit(1); // Exit the process if MongoDB connection fails
+  });
 
 // Routes
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-  });
-  
-  
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
+});
+
 // Signup
 app.post('/signup', async (req, res) => {
   try {
@@ -132,6 +135,12 @@ async function generatePDF(htmlContent) {
   return pdfBuffer;
 }
 
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: 'Internal Server Error' });
+});
+  
 app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+    console.log(`Server is listening at http://localhost:${port}`);
 });

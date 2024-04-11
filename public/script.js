@@ -29,7 +29,7 @@ async function fetchSnippets() {
       console.error(error);
     }
   }
-  
+
   document.getElementById('signup-form').addEventListener('submit', async (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
