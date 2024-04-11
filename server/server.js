@@ -39,22 +39,51 @@ mongoose.connect('mongodb://localhost:27017/code_snippet_db', {
   });
 
 // Routes
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
-});
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'login.html'));
+  });
+  
 
 // Signup
 app.post('/signup', async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({ email, password: hashedPassword });
-    await user.save();
-    res.status(201).json({ message: 'User created successfully' });
-  } catch (error) {
-    res.status(400).json({ message: error.message });
-  }
-});
+    try {
+      const { email, password } = req.body;
+  
+      // Check if email and password are provided
+      if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
+      }
+  
+      // Validate email format (you can use a more comprehensive validation library)
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+      }
+  
+      // Validate password length (you can add more complex rules as needed)
+      if (password.length < 6) {
+        return res.status(400).json({ message: 'Password must be at least 6 characters long' });
+      }
+  
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create a new user
+      const user = new User({ email, password: hashedPassword });
+      await user.save();
+  
+      // Send a success response
+      res.status(201).json({ message: 'User created successfully' });
+    } catch (error) {
+      // Check if the error is a duplicate key error
+      if (error.code === 11000 && error.keyPattern && error.keyPattern.email) {
+        return res.status(400).json({ message: 'Email address is already in use' });
+      }
+      // Handle other errors
+      res.status(500).json({ message: error.message });
+    }
+  });  
+  
 
 // Login
 app.post('/login', passport.authenticate('local', {
