@@ -47,11 +47,12 @@ async function fetchSnippets() {
         window.location.href = '/login'; // Redirect to login page after successful signup
       } else {
         const errorMessage = await response.json();
-        console.error(errorMessage);
-        // Display error message to the user
+        document.getElementById('signup-server-error').textContent = errorMessage.message; // Display server-side error message
       }
     } catch (error) {
       console.error(error);
     }
-  });
+});
+
+  
   
