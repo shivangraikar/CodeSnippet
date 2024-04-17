@@ -1,0 +1,28 @@
+/* dashboard.css */
+
+/* Styles for the dashboard page */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  h1 {
+    color: #333;
+  }
+  
+  .snippet {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #f4f4f4;
+    border: 1px solid #ccc;
+  }
+  
+  .snippet h2 {
+    margin-top: 0;
+  }
+  
+  .snippet p {
+    margin-bottom: 0;
+  }
+  

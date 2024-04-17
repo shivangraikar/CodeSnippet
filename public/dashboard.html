@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="dashboard.css"> <!-- Assuming you have a separate CSS file for styling -->
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome to Your Dashboard</h1>
+    <div id="snippet-list">
+      <!-- Snippets will be dynamically added here -->
+    </div>
+    <form id="create-snippet-form">
+      <h2>Create a New Snippet</h2>
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" required>
+      </div>
+      <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="language" required>
+      </div>
+      <div class="form-group">
+        <label for="code">Code:</label>
+        <textarea id="code" name="code" required></textarea>
+      </div>
+      <button type="submit">Create Snippet</button>
+    </form>
+    <p id="error-message" class="error-message hidden"></p> <!-- Element to display error messages -->
+  </div>
+  <script src="dashboard.js"></script> <!-- Assuming you have a separate JavaScript file for client-side scripting -->
+</body>
+</html>
