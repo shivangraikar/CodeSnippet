@@ -86,11 +86,29 @@ app.post('/signup', async (req, res) => {
   
 
 // Login
-app.post('/login', passport.authenticate('local', {
-  successRedirect: '/dashboard',
-  failureRedirect: '/login',
-  failureFlash: true
-}));
+app.post('/login', async (req, res) => {
+    try {
+      const { email, password } = req.body;
+  
+      // Check if user exists
+      const user = await User.findOne({ email });
+  
+      if (!user) {
+        // User does not exist, prompt to sign up
+        return res.status(400).json({ message: 'User does not exist. Please sign up.' });
+      }
+  
+      // Proceed with passport authentication if user exists
+      passport.authenticate('local', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/login',
+        failureFlash: true
+      })(req, res);
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+  
 
 // Logout
 app.get('/logout', (req, res) => {
